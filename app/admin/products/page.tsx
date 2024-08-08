@@ -84,7 +84,7 @@ const ProductsTable = async () => {
                   </>
                 ) : (
                   <>
-                    <XCircle />
+                    <XCircle className="stroke-destructive" />
                   </>
                 )}
               </TableCell>
