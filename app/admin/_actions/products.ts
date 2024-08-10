@@ -4,6 +4,7 @@ import {z} from "zod"
 import fs from "fs/promises"
 import db from "@/db/db"
 import { notFound, redirect } from "next/navigation"
+import { revalidatePath } from "next/cache"
 
 const fileSchema = z.instanceof(File, {message: "Required"})
 const imageSchema = fileSchema.refine(file => file.size === 0 || file.type.startsWith("image/"))
@@ -14,11 +15,6 @@ const addSchema = z.object({
     priceInCents: z.coerce.number().int().min(1),
     file: fileSchema.refine(file => file.size > 0, 'Required'), 
     image: imageSchema.refine(file => file.size > 0, 'Required')
-})
-
-const editSchema = addSchema.extend({
-    file: fileSchema.optional(),
-    image: imageSchema.optional()
 })
 
 export const addProduct = async (prevState: unknown, formData: FormData) => {
@@ -53,8 +49,15 @@ export const addProduct = async (prevState: unknown, formData: FormData) => {
 
     console.log("Product successfully created in the DB");
 
+    revalidatePath("/")
+    revalidatePath("/products")
     redirect("/admin/products")
 }
+
+const editSchema = addSchema.extend({
+    file: fileSchema.optional(),
+    image: imageSchema.optional()
+})
 
 export const updateProduct = async (id: string, prevState: unknown, formData: FormData) => {
     const result = editSchema.safeParse(
@@ -95,7 +98,10 @@ export const updateProduct = async (id: string, prevState: unknown, formData: Fo
         imagePath
     }})
 
-    console.log("Product successfully created in the DB");
+    console.log("Product successfully edited in the DB");
+
+    revalidatePath("/")
+    revalidatePath("/products")
 
     redirect("/admin/products")
 }
@@ -104,6 +110,10 @@ export const toggleProductAvailability = async (id: string, isAvailableForPurcha
     await db.product.update({where: {id}, data: {
         isAvailableForPurchase
     }})
+
+
+    revalidatePath("/")
+    revalidatePath("/products")
 }
 
 export const deleteProduct = async (id: string) => {
@@ -113,4 +123,7 @@ if (product == null) return notFound()
 
 await fs.unlink(product.filePath)
 await fs.unlink(`public${product.imagePath}`)
+
+revalidatePath("/")
+revalidatePath("/products")
 }
