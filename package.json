@@ -21,6 +21,8 @@
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",
+    "react-email": "^2.1.6",
+    "resend": "^3.5.0",
     "save": "^2.9.0",
     "stripe": "^16.7.0",
     "tailwind-merge": "^2.4.0",
