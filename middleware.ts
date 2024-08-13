@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { isValidPassword } from "./lib/isValidPassword";
+import { isValidPassword } from "./src/lib/isValidPassword";
 
 export async function middleware(req: NextRequest) {
     if(await isAuthenticated(req) === false) {
