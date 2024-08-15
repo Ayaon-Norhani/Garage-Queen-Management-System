@@ -1,3 +1,4 @@
+import FeatureMultiCard from "@/src/components/FeaturedMultiCard";
 import ProductCard, { ProductCardSkeleton } from "@/src/components/ProductCard";
 import { Button } from "@/src/components/ui/button";
 import db from "@/src/db/db";
@@ -29,7 +30,7 @@ const getNewestProducts = cache(() => {
 
 const HomePage = () => {
   return (
-    <main className="space-y-12">
+    <main className="space-y-12 max-w-5xl">
       <ProductGridSection
         title="Most Popular"
         productsFetcher={getMostPopularProducts}
@@ -50,10 +51,11 @@ const ProductGridSection = async ({
 }: ProductGridSectionTypes) => {
   return (
     <div className="space-y-4">
+      <FeatureMultiCard />
       <div className="flex gap-4">
         <h2 className="text-3xl font-bold">{title}</h2>
         <Button variant="outline" asChild>
-          <Link href="/" className="space-x-2">
+          <Link href="/products" className="space-x-2">
             <span>View All</span>
             <ArrowRight className="size-4" />
           </Link>

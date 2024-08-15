@@ -41,7 +41,7 @@ const ProductCard = ({
       </CardContent>
       <CardFooter>
         <Button asChild size="lg" className="w-full">
-          <Link href={`/products/${id}/purchase`}>Purchase</Link>
+          <Link href={`/products/${id}/purchase`}>Order</Link>
         </Button>
       </CardFooter>
     </Card>

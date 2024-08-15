@@ -26,6 +26,7 @@ const config = {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
+        navBg: "var(--nav-bg)",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
