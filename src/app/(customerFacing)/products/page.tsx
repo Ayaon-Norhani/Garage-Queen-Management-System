@@ -14,21 +14,24 @@ const getProducts = cache(() => {
 
 const ProductsPage = (props: Props) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <Suspense
-        fallback={
-          <>
-            <ProductCardSkeleton />
-            <ProductCardSkeleton />
-            <ProductCardSkeleton />
-            <ProductCardSkeleton />
-            <ProductCardSkeleton />
-            <ProductCardSkeleton />
-          </>
-        }
-      >
-        <ProductsSuspense />
-      </Suspense>
+    <div className="">
+      <h2 className="text-3xl font-bold mb-5">All Products</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl">
+        <Suspense
+          fallback={
+            <>
+              <ProductCardSkeleton />
+              <ProductCardSkeleton />
+              <ProductCardSkeleton />
+              <ProductCardSkeleton />
+              <ProductCardSkeleton />
+              <ProductCardSkeleton />
+            </>
+          }
+        >
+          <ProductsSuspense />
+        </Suspense>
+      </div>
     </div>
   );
 };

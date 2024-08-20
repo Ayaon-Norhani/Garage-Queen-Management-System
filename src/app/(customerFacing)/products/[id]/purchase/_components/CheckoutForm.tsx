@@ -1,6 +1,6 @@
 "use client";
 
-import { userOrderExists } from "@/src/actions/order";
+import { userOrderExists } from "@/src/app/actions/order";
 import { Button } from "@/src/components/ui/button";
 import {
   Card,

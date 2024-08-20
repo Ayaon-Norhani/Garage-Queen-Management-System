@@ -29,7 +29,7 @@ const ProductCard = ({
 }: Props) => {
   return (
     <Card className="flex overflow-hidden flex-col">
-      <div className="relative w-full h-auto aspect-video">
+      <div className="relative w-full h-auto aspect-3/2">
         <Image src={imagePath} fill alt={name} />
       </div>
       <CardHeader>
@@ -41,7 +41,7 @@ const ProductCard = ({
       </CardContent>
       <CardFooter>
         <Button asChild size="lg" className="w-full">
-          <Link href={`/products/${id}/purchase`}>Purchase</Link>
+          <Link href={`/products/${id}/purchase`}>Order</Link>
         </Button>
       </CardFooter>
     </Card>

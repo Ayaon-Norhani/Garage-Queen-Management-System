@@ -22,10 +22,14 @@ const config = {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans]
       },
+      aspectRatio: {
+        '3/2': '3 / 2',
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
+        navBg: "var(--nav-bg)",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
