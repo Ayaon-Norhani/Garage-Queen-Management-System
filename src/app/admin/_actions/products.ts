@@ -5,6 +5,7 @@ import fs from "fs/promises"
 import db from "@/src/db/db"
 import { notFound, redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
+import { v2 as cloudinary } from 'cloudinary';
 
 const fileSchema = z.instanceof(File, {message: "Required"})
 const imageSchema = fileSchema.refine(file => file.size === 0 || file.type.startsWith("image/"))
@@ -17,42 +18,148 @@ const addSchema = z.object({
     image: imageSchema.refine(file => file.size > 0, 'Required')
 })
 
-export const addProduct = async (prevState: unknown, formData: FormData) => {
-    const result = addSchema.safeParse(
-        Object.fromEntries(formData.entries())
-    )
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  });
 
-    if(result.success === false) {
-        return result.error.formErrors.fieldErrors
+  // Convert callback-based upload_stream to a Promise-based function
+const uploadStream = (options: any, buffer: Buffer) => {
+    return new Promise<{ secure_url: string }>((resolve, reject) => {
+      cloudinary.uploader.upload_stream(options, (error, result) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        if (!result) {
+          reject(new Error("Upload result is undefined"));
+          return;
+        }
+        resolve(result);
+      }).end(buffer);
+    });
+  };
+  
+  export const addProduct = async (prevState: unknown, formData: FormData) => {
+    const result = addSchema.safeParse(
+      Object.fromEntries(formData.entries())
+    );
+  
+    if (result.success === false) {
+      return result.error.formErrors.fieldErrors;
+    }
+  
+    const data = result.data;
+  
+    try {
+      // Upload file to Cloudinary
+    //   const fileBuffer = Buffer.from(await data.file.arrayBuffer());
+    //   const fileUpload = await uploadStream(
+    //     { resource_type: 'raw' },
+    //     fileBuffer
+    //   );
+  
+      // Upload image to Cloudinary
+      const imageBuffer = Buffer.from(await data.image.arrayBuffer());
+      const imageUpload = await uploadStream(
+        { resource_type: 'image' },
+        imageBuffer
+      );
+  
+      // Save product to database
+      await db.product.create({
+        data: {
+          isAvailableForPurchase: false,
+          name: data.name,
+          description: data.description,
+          priceInCents: data.priceInCents,
+          filePath: "test", // Store Cloudinary URL for file
+          imagePath: imageUpload.secure_url, // Store Cloudinary URL for image
+        }
+      });
+  
+      console.log("Product successfully created in the DB");
+  
+      // Revalidate paths and redirect
+       // Revalidate paths and redirect
+    await revalidatePath("/");
+    await revalidatePath("/products");
+
+    // Redirect to admin products page
+    // return { redirect: "/admin/products" };
+  
+    } catch (error) {
+      console.error("Error uploading files or saving product:", error);
+      throw new Error('Failed to upload files or save product');
     }
 
-    const data = result.data
-
-    await fs.mkdir("products", {recursive: true})
-    const filePath = `products/${crypto.randomUUID()}-${data.file.name}`
-    await fs.writeFile(filePath, Buffer.from(await data.file.arrayBuffer()))
-
-    await fs.mkdir("public/products", {recursive: true})
-    const imagePath = `/products/${crypto.randomUUID()}-${data.image.name}`
-    await fs.writeFile(`public${imagePath}`, Buffer.from(await data.image.arrayBuffer()))
-
-    console.log("Data before DB insert:", data);
-
-    await db.product.create({data: {
-        isAvailableForPurchase: false,
-        name: data.name,
-        description: data.description,
-        priceInCents: data.priceInCents,
-        filePath,
-        imagePath
-    }})
-
-    console.log("Product successfully created in the DB");
-
-    revalidatePath("/")
-    revalidatePath("/products")
     redirect("/admin/products")
-}
+
+  };
+  
+
+// export const addProduct = async (prevState: unknown, formData: FormData) => {
+//     const result = addSchema.safeParse(
+//         Object.fromEntries(formData.entries())
+//     )
+
+//     if(result.success === false) {
+//         return result.error.formErrors.fieldErrors
+//     }
+
+//     const data = result.data
+
+
+//       // Upload file to Cloudinary
+//   const fileUpload = await cloudinary.uploader.upload_stream(
+//     { resource_type: 'raw' },
+//     (error, result) => {
+//       if (error) throw new Error('File upload failed');
+//       return result?.secure_url;
+//     }
+//   ).end(Buffer.from(await data.file.arrayBuffer()));
+
+//   // Upload image to Cloudinary
+//   const imageUpload = await cloudinary.uploader.upload_stream(
+//     { resource_type: 'image' },
+//     (error, result) => {
+//       if (error) throw new Error('Image upload failed');
+//       return result?.secure_url;
+//     //   imagePath = result?.secure_url;
+//     }
+//   ).end(Buffer.from(await data.image.arrayBuffer()));
+
+//   console.log(imageUpload)
+
+//     // await fs.mkdir("products", {recursive: true})
+//     // const filePath = `products/${crypto.randomUUID()}-${data.file.name}`
+//     // await fs.writeFile(filePath, Buffer.from(await data.file.arrayBuffer()))
+
+//     // await fs.mkdir("public/products", {recursive: true})
+//     // const imagePath = `/products/${crypto.randomUUID()}-${data.image.name}`
+//     // await fs.writeFile(`public${imagePath}`, Buffer.from(await data.image.arrayBuffer()))
+
+
+//     await db.product.create({data: {
+//         isAvailableForPurchase: false,
+//         name: data.name,
+//         description: data.description,
+//         priceInCents: data.priceInCents,
+//         // filePath,
+//         // imagePath
+//         filePath: "test",
+//         // imagePath: "test"
+//         // filePath: fileUpload.secure_url, // Store Cloudinary URL
+//         imagePath: imageUpload.secure_url, // Store Cloudinary URL
+//     }})
+
+//     console.log("Product successfully created in the DB");
+
+//     revalidatePath("/")
+//     revalidatePath("/products")
+//     redirect("/admin/products")
+// }
 
 const editSchema = addSchema.extend({
     file: fileSchema.optional(),

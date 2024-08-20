@@ -7,6 +7,7 @@ import { Product } from "@prisma/client";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
+import { isBrowser, isMobile } from "react-device-detect";
 
 const getMostPopularProducts = cache(
   () => {
@@ -31,11 +32,11 @@ const getNewestProducts = cache(() => {
 const HomePage = () => {
   return (
     <main className="space-y-12 max-w-5xl">
+      <ProductGridSection title="Newest" productsFetcher={getNewestProducts} />
       <ProductGridSection
         title="Most Popular"
         productsFetcher={getMostPopularProducts}
       />
-      <ProductGridSection title="Newest" productsFetcher={getNewestProducts} />
     </main>
   );
 };
@@ -51,9 +52,11 @@ const ProductGridSection = async ({
 }: ProductGridSectionTypes) => {
   return (
     <div className="space-y-4">
-      <FeatureMultiCard />
+      <div className="hidden md:block">
+        <FeatureMultiCard />
+      </div>
       <div className="flex gap-4">
-        <h2 className="text-3xl font-bold">{title}</h2>
+        <h2 className="text-2xl font-bold">{title}</h2>
         <Button variant="outline" asChild>
           <Link href="/products" className="space-x-2">
             <span>View All</span>

@@ -26,7 +26,6 @@ const FeatureMultiCard = (props: Props) => {
           <h4 className="absolute left-3 top-3 bg-white/50 backdrop-blur-sm px-2 py-1 rounded">
             Featured
           </h4>
-
           <div>
             <Image
               src="/static/images/rezvani-main.jpg"
