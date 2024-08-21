@@ -16,7 +16,7 @@ export const Nav = ({ children }: Props) => {
     <nav className="bg-navBg text-primary-foreground flex justify-between items-center px-9 py-5">
       <h1 className="text-2xl flex font-bold space-x-2">
         <Image
-          src="https://res.cloudinary.com/dyyqzhpji/image/upload/v1724145764/GarageQueen/tlrursb63qbh3qu2fvsa.jpg"
+          src="https://res.cloudinary.com/dyyqzhpji/image/upload/v1724221579/gq_logo_ht3yzj.jpg"
           width={35}
           height={35}
           alt="GarageQueen Logo"
