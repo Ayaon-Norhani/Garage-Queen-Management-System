@@ -5,6 +5,7 @@ import db from "@/src/db/db";
 import { cache } from "@/src/lib/cache";
 import { Product } from "@prisma/client";
 import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 import { isBrowser, isMobile } from "react-device-detect";
@@ -33,10 +34,10 @@ const HomePage = () => {
   return (
     <main className="space-y-12 max-w-5xl">
       <ProductGridSection title="Newest" productsFetcher={getNewestProducts} />
-      <ProductGridSection
+      {/* <ProductGridSection
         title="Most Popular"
         productsFetcher={getMostPopularProducts}
-      />
+      /> */}
     </main>
   );
 };
@@ -52,6 +53,17 @@ const ProductGridSection = async ({
 }: ProductGridSectionTypes) => {
   return (
     <div className="space-y-4">
+      {/* <div className="">
+        <Image
+          src="https://res.cloudinary.com/dyyqzhpji/image/upload/v1724217126/GarageQueen/bomjdmeb7vsbkswojsxy.jpg"
+          width={1200}
+          height={300}
+          // fill
+          // objectFit="cover"
+          // objectPosition="center"
+          alt="garage queen picture"
+        />
+      </div> */}
       <div className="hidden md:block">
         <FeatureMultiCard />
       </div>
