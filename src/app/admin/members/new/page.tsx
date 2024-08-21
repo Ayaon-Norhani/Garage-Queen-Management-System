@@ -7,7 +7,7 @@ type Props = {};
 const NewProductPage = (props: Props) => {
   return (
     <>
-      <PageHeader>Add a Car</PageHeader>
+      <PageHeader>Add member</PageHeader>
       <ProductForm />
     </>
   );

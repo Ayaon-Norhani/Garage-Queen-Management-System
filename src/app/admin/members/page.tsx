@@ -30,9 +30,9 @@ const AdminProductsPage = (props: Props) => {
   return (
     <>
       <div className="flex justify-between items-center gap-4">
-        <PageHeader>Cars</PageHeader>
+        <PageHeader>Members</PageHeader>
         <Button asChild>
-          <Link href="/admin/products/new">Add a Car</Link>
+          <Link href="/admin/members/new">Add member</Link>
         </Button>
       </div>
       <ProductsTable />
