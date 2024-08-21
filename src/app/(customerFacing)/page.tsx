@@ -1,16 +1,15 @@
 import FeatureMultiCard from "@/src/components/FeaturedMultiCard";
-import ProductCard, { ProductCardSkeleton } from "@/src/components/ProductCard";
+import MemberCard, { MemberCardSkeleton } from "@/src/components/MemberCard";
 import { Button } from "@/src/components/ui/button";
 import db from "@/src/db/db";
 import { cache } from "@/src/lib/cache";
-import { Product } from "@prisma/client";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 import { isBrowser, isMobile } from "react-device-detect";
 
-const getMostPopularProducts = cache(
+const getMostPopularMembers = cache(
   () => {
     return db.product.findMany({
       where: { isAvailableForPurchase: true },
@@ -18,35 +17,35 @@ const getMostPopularProducts = cache(
       take: 6,
     });
   },
-  ["/", "getMostPopularProducts"],
+  ["/", "getMostPopularMembers"],
   { revalidate: 60 * 60 * 24 }
 );
 
-const getNewestProducts = cache(() => {
+const getNewestMembers = cache(() => {
   return db.product.findMany({
     where: { isAvailableForPurchase: true },
     orderBy: { createdAt: "desc" },
     take: 6,
   });
-}, ["/", "getNewestProducts"]);
+}, ["/", "getNewestMembers"]);
 
 const HomePage = () => {
   return (
     <main className="space-y-12 max-w-5xl">
-      <ProductGridSection title="Newest" productsFetcher={getNewestProducts} />
+      <MemberGridSection title="Newest" productsFetcher={getNewestMembers} />
     </main>
   );
 };
 
-type ProductGridSectionTypes = {
+type MemberGridSectionTypes = {
   title: string;
   productsFetcher: () => Promise<Product[]>;
 };
 
-const ProductGridSection = async ({
+const MemberGridSection = async ({
   productsFetcher,
   title,
-}: ProductGridSectionTypes) => {
+}: MemberGridSectionTypes) => {
   return (
     <div className="space-y-4">
       <div className="hidden md:block">
@@ -65,9 +64,9 @@ const ProductGridSection = async ({
         <Suspense
           fallback={
             <>
-              <ProductCardSkeleton />
-              <ProductCardSkeleton />
-              <ProductCardSkeleton />
+              <MemberCardSkeleton />
+              <MemberCardSkeleton />
+              <MemberCardSkeleton />
             </>
           }
         >
@@ -84,7 +83,7 @@ const ProductSuspense = async ({
   productsFetcher: () => Promise<Product[]>;
 }) => {
   return (await productsFetcher()).map((product) => {
-    return <ProductCard key={product.id} {...product} />;
+    return <MemberCard key={product.id} {...product} />;
   });
 };
 

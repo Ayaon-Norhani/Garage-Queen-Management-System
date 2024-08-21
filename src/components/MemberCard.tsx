@@ -20,7 +20,7 @@ type Props = {
   imagePath: string;
 };
 
-const ProductCard = ({
+const MemberCard = ({
   id,
   name,
   priceInCents,
@@ -48,7 +48,7 @@ const ProductCard = ({
   );
 };
 
-export const ProductCardSkeleton = () => {
+export const MemberCardSkeleton = () => {
   return (
     <Card className="overflow-hidden flex flex-col animate-pulse">
       <div className="w-full aspect-video bg-gray-300" />
@@ -72,4 +72,4 @@ export const ProductCardSkeleton = () => {
   );
 };
 
-export default ProductCard;
+export default MemberCard;

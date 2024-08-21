@@ -35,5 +35,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-/products
-/public/products
+/members
+/public/members
