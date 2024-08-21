@@ -5,6 +5,7 @@ import db from "@/src/db/db";
 import { cache } from "@/src/lib/cache";
 import { Product } from "@prisma/client";
 import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 import { isBrowser, isMobile } from "react-device-detect";
@@ -33,10 +34,6 @@ const HomePage = () => {
   return (
     <main className="space-y-12 max-w-5xl">
       <ProductGridSection title="Newest" productsFetcher={getNewestProducts} />
-      <ProductGridSection
-        title="Most Popular"
-        productsFetcher={getMostPopularProducts}
-      />
     </main>
   );
 };
