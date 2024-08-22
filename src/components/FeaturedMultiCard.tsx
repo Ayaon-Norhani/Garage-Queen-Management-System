@@ -30,7 +30,7 @@ const FeatureMultiCard = (props: Props) => {
             src="/static/images/banner.jpg"
             width={1024}
             height={341}
-            alt="rezvani main picture"
+            alt="Car club"
           />
         </main>
       </section>
