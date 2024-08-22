@@ -24,7 +24,20 @@ const FeatureMultiCard = (props: Props) => {
       <section>
         <main className="flex relative rounded-lg overflow-hidden">
           <h4 className="absolute left-3 top-3 bg-white/50 backdrop-blur-sm px-2 py-1 rounded">
-            Featured
+            Social Events
+          </h4>{" "}
+          <Image
+            src="/static/images/banner.jpg"
+            width={1024}
+            height={341}
+            alt="rezvani main picture"
+          />
+        </main>
+      </section>
+      <section>
+        <main className="flex relative rounded-lg overflow-hidden">
+          <h4 className="absolute left-3 top-3 bg-white/50 backdrop-blur-sm px-2 py-1 rounded">
+            Social Events
           </h4>
           <div>
             <Image

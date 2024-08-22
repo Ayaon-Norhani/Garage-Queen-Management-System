@@ -11,6 +11,7 @@ import { formatCurrency } from "@/src/lib/formatter";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import Image from "next/image";
+import { Facebook, Instagram, Twitter } from "lucide-react";
 
 type Props = {
   id: string;
@@ -39,9 +40,24 @@ const MemberCard = ({
       <CardContent className="flex-grow">
         <p className="line-clamp-4">{description}</p>
       </CardContent>
-      <CardFooter>
-        <Button asChild size="lg" className="w-full">
-          <Link href={`/products/${id}/purchase`}>Order</Link>
+      <CardFooter className="flex justify-end space-x-1">
+        <Button asChild className="rounded-full bg-slate-500 w-6 h-6" size="xs">
+          <Link href={`/products/${id}/purchase`}>
+            {" "}
+            <Facebook size={15} />
+          </Link>
+        </Button>
+        <Button asChild className="rounded-full bg-slate-500 w-6 h-6" size="xs">
+          <Link href={`/products/${id}/purchase`}>
+            {" "}
+            <Instagram size={15} />
+          </Link>
+        </Button>
+        <Button asChild className="rounded-full bg-slate-500 w-6 h-6" size="xs">
+          <Link href={`/products/${id}/purchase`}>
+            {" "}
+            <Twitter size={15} />
+          </Link>
         </Button>
       </CardFooter>
     </Card>
