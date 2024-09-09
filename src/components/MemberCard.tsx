@@ -5,9 +5,9 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
+  CardNickname,
   CardTitle,
 } from "./ui/card";
-import { formatCurrency } from "@/src/lib/formatter";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import Image from "next/image";
@@ -16,18 +16,12 @@ import { Facebook, Instagram, Twitter } from "lucide-react";
 type Props = {
   id: string;
   name: string;
-  priceInCents: number;
+  nickname: string; // Ensure `nickname` is a string
   description: string;
   imagePath: string;
 };
 
-const MemberCard = ({
-  id,
-  name,
-  priceInCents,
-  description,
-  imagePath,
-}: Props) => {
+const MemberCard = ({ id, name, nickname, description, imagePath }: Props) => {
   return (
     <Card className="flex overflow-hidden flex-col">
       <div className="relative w-full h-auto aspect-3/2">
@@ -35,7 +29,8 @@ const MemberCard = ({
       </div>
       <CardHeader>
         <CardTitle>{name}</CardTitle>
-        <CardDescription>{formatCurrency(priceInCents / 100)}</CardDescription>
+        <CardNickname>{nickname}</CardNickname>
+        {/* Display the nickname directly */}
       </CardHeader>
       <CardContent className="flex-grow">
         <p className="line-clamp-4">{description}</p>
@@ -43,19 +38,16 @@ const MemberCard = ({
       <CardFooter className="flex justify-end space-x-1">
         <Button asChild className="rounded-full bg-slate-500 w-6 h-6">
           <Link href={`/products/${id}/purchase`}>
-            {" "}
             <Facebook size={15} />
           </Link>
         </Button>
         <Button asChild className="rounded-full bg-slate-500 w-6 h-6">
           <Link href={`/products/${id}/purchase`}>
-            {" "}
             <Instagram size={15} />
           </Link>
         </Button>
         <Button asChild className="rounded-full bg-slate-500 w-6 h-6">
           <Link href={`/products/${id}/purchase`}>
-            {" "}
             <Twitter size={15} />
           </Link>
         </Button>
