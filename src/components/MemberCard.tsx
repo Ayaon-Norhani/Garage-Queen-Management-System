@@ -16,7 +16,7 @@ import { Facebook, Instagram, Twitter } from "lucide-react";
 type Props = {
   id: string;
   name: string;
-  nickname: string; // Ensure `nickname` is a string
+  nickname?: string;
   description: string;
   imagePath: string;
 };
@@ -30,7 +30,6 @@ const MemberCard = ({ id, name, nickname, description, imagePath }: Props) => {
       <CardHeader>
         <CardTitle>{name}</CardTitle>
         <CardNickname>{nickname}</CardNickname>
-        {/* Display the nickname directly */}
       </CardHeader>
       <CardContent className="flex-grow">
         <p className="line-clamp-4">{description}</p>
