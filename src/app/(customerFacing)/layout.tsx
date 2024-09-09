@@ -14,7 +14,9 @@ export default function Layout({
         <NavLinks href="/members">All Members</NavLinks>
         <NavLinks href="/orders">My Orders</NavLinks>
       </Nav>
-      <div className="container my-6 flex justify-center">{children}</div>
+      <div className="container my-6 flex justify-center font-porscheNext">
+        {children}
+      </div>
     </>
   );
 }
