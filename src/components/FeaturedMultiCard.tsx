@@ -22,8 +22,8 @@ const FeatureMultiCard = (props: Props) => {
   return (
     <Slider {...settings}>
       <section>
-        <main className="flex relative rounded-lg overflow-hidden">
-          <h4 className="absolute left-3 top-3 bg-white/50 backdrop-blur-sm px-2 py-1 rounded">
+        <main className="flex relative overflow-hidden">
+          <h4 className="absolute left-3 top-3 bg-white/50 backdrop-blur-sm px-2 py-1 ">
             Social Events
           </h4>{" "}
           <Image
@@ -35,8 +35,8 @@ const FeatureMultiCard = (props: Props) => {
         </main>
       </section>
       <section>
-        <main className="flex relative rounded-lg overflow-hidden">
-          <h4 className="absolute left-3 top-3 bg-white/50 backdrop-blur-sm px-2 py-1 rounded">
+        <main className="flex relative  overflow-hidden">
+          <h4 className="absolute left-3 top-3 bg-white/50 backdrop-blur-sm px-2 py-1">
             Social Events
           </h4>
           <div>
