@@ -1,12 +1,50 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
+import React, { CSSProperties, MouseEventHandler } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 type Props = {};
+
+interface ArrowProps {
+  className?: string;
+  style?: CSSProperties;
+  onClick?: MouseEventHandler<HTMLDivElement>;
+}
+
+function NextArrow(props: ArrowProps) {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{
+        ...style,
+        display: "absolute",
+        right: "12px",
+        zIndex: 99,
+      }}
+      onClick={onClick}
+    />
+  );
+}
+
+function PrevArrow(props: ArrowProps) {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{
+        ...style,
+        display: "absolute",
+        left: "12px",
+        zIndex: 99,
+      }}
+      onClick={onClick}
+    />
+  );
+}
 
 const FeatureMultiCard = (props: Props) => {
   var settings = {
@@ -18,6 +56,8 @@ const FeatureMultiCard = (props: Props) => {
     autoplay: true,
     autoplaySpeed: 4000,
     cssEase: "linear",
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
   };
   return (
     <Slider {...settings}>
@@ -28,7 +68,7 @@ const FeatureMultiCard = (props: Props) => {
           </h4>{" "}
           <Image
             src="/static/images/banner.jpg"
-            width={1024}
+            width={1200}
             height={341}
             alt="Car club"
           />
@@ -89,8 +129,8 @@ const FeatureMultiCard = (props: Props) => {
         </main>
       </section>
       <section>
-        <main className="flex relative rounded-lg overflow-hidden">
-          <h4 className="absolute left-3 top-3 bg-white/50 backdrop-blur-sm px-2 py-1 rounded">
+        <main className="flex relative overflow-hidden">
+          <h4 className="absolute left-3 top-3 bg-white/50 backdrop-blur-sm px-2 py-1">
             Featured
           </h4>
 
