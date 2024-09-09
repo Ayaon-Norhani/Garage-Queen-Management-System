@@ -34,7 +34,10 @@ const getNewestMembers = cache(() => {
 const HomePage = () => {
   return (
     <main className="space-y-12 max-w-5xl">
-      <MemberGridSection title="Newest" productsFetcher={getNewestMembers} />
+      <MemberGridSection
+        title="Quick Links"
+        productsFetcher={getNewestMembers}
+      />
     </main>
   );
 };

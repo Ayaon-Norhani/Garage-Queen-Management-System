@@ -20,7 +20,8 @@ const config = {
     },
     extend: {
       fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans]
+        sans: ["var(--font-sans)", ...fontFamily.sans],
+        porscheNext: ['PorscheNext', 'sans-serif'],
       },
       aspectRatio: {
         '3/2': '3 / 2',
