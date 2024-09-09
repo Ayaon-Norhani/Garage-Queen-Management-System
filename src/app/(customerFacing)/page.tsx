@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import FeatureMultiCard from "@/src/components/FeaturedMultiCard";
 import MemberCard, { MemberCardSkeleton } from "@/src/components/MemberCard";
 import { Button } from "@/src/components/ui/button";

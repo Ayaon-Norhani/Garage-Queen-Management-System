@@ -41,19 +41,19 @@ const MemberCard = ({
         <p className="line-clamp-4">{description}</p>
       </CardContent>
       <CardFooter className="flex justify-end space-x-1">
-        <Button asChild className="rounded-full bg-slate-500 w-6 h-6" size="xs">
+        <Button asChild className="rounded-full bg-slate-500 w-6 h-6">
           <Link href={`/products/${id}/purchase`}>
             {" "}
             <Facebook size={15} />
           </Link>
         </Button>
-        <Button asChild className="rounded-full bg-slate-500 w-6 h-6" size="xs">
+        <Button asChild className="rounded-full bg-slate-500 w-6 h-6">
           <Link href={`/products/${id}/purchase`}>
             {" "}
             <Instagram size={15} />
           </Link>
         </Button>
-        <Button asChild className="rounded-full bg-slate-500 w-6 h-6" size="xs">
+        <Button asChild className="rounded-full bg-slate-500 w-6 h-6">
           <Link href={`/products/${id}/purchase`}>
             {" "}
             <Twitter size={15} />

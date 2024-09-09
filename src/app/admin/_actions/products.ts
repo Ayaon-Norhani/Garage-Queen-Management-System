@@ -83,13 +83,10 @@ export const addProduct = async (prevState: unknown, formData: FormData) => {
 
     console.log("Product successfully created in the DB");
 
-    // Revalidate paths and redirect
-    // Revalidate paths and redirect
+
     await revalidatePath("/");
     await revalidatePath("/members");
 
-    // Redirect to admin products page
-    // return { redirect: "/admin/products" };
   } catch (error) {
     console.error("Error uploading files or saving product:", error);
     throw new Error("Failed to upload files or save product");
@@ -97,66 +94,6 @@ export const addProduct = async (prevState: unknown, formData: FormData) => {
 
   redirect("/admin/members");
 };
-
-// export const addProduct = async (prevState: unknown, formData: FormData) => {
-//     const result = addSchema.safeParse(
-//         Object.fromEntries(formData.entries())
-//     )
-
-//     if(result.success === false) {
-//         return result.error.formErrors.fieldErrors
-//     }
-
-//     const data = result.data
-
-//       // Upload file to Cloudinary
-//   const fileUpload = await cloudinary.uploader.upload_stream(
-//     { resource_type: 'raw' },
-//     (error, result) => {
-//       if (error) throw new Error('File upload failed');
-//       return result?.secure_url;
-//     }
-//   ).end(Buffer.from(await data.file.arrayBuffer()));
-
-//   // Upload image to Cloudinary
-//   const imageUpload = await cloudinary.uploader.upload_stream(
-//     { resource_type: 'image' },
-//     (error, result) => {
-//       if (error) throw new Error('Image upload failed');
-//       return result?.secure_url;
-//     //   imagePath = result?.secure_url;
-//     }
-//   ).end(Buffer.from(await data.image.arrayBuffer()));
-
-//   console.log(imageUpload)
-
-//     // await fs.mkdir("products", {recursive: true})
-//     // const filePath = `products/${crypto.randomUUID()}-${data.file.name}`
-//     // await fs.writeFile(filePath, Buffer.from(await data.file.arrayBuffer()))
-
-//     // await fs.mkdir("public/products", {recursive: true})
-//     // const imagePath = `/products/${crypto.randomUUID()}-${data.image.name}`
-//     // await fs.writeFile(`public${imagePath}`, Buffer.from(await data.image.arrayBuffer()))
-
-//     await db.product.create({data: {
-//         isAvailableForPurchase: false,
-//         name: data.name,
-//         description: data.description,
-//         priceInCents: data.priceInCents,
-//         // filePath,
-//         // imagePath
-//         filePath: "test",
-//         // imagePath: "test"
-//         // filePath: fileUpload.secure_url, // Store Cloudinary URL
-//         imagePath: imageUpload.secure_url, // Store Cloudinary URL
-//     }})
-
-//     console.log("Product successfully created in the DB");
-
-//     revalidatePath("/")
-//     revalidatePath("/products")
-//     redirect("/admin/products")
-// }
 
 const editSchema = addSchema.extend({
   file: fileSchema.optional(),
@@ -234,12 +171,26 @@ export const toggleProductAvailability = async (
 };
 
 export const deleteProduct = async (id: string) => {
-  const product = await db.product.delete({ where: { id } });
+  const product = await db.product.findUnique({ where: { id } });
   if (product == null) return notFound();
 
-  await fs.unlink(product.filePath);
-  await fs.unlink(`public${product.imagePath}`);
+  try {
+    const imageUrl = product.imagePath;
+    const publicId = imageUrl.split('/').pop()?.split('.')[0];
 
-  revalidatePath("/");
-  revalidatePath("/products");
+    if (publicId) {
+      await cloudinary.uploader.destroy(publicId, { resource_type: 'image' });
+      console.log('Image successfully deleted from Cloudinary');
+    }
+
+    await db.product.delete({ where: { id } });
+    
+    revalidatePath("/");
+    revalidatePath("/products");
+
+    console.log("Product successfully deleted from the DB");
+  } catch (error) {
+    console.error('Error deleting product or associated image:', error);
+    throw new Error('Failed to delete product or associated image');
+  }
 };
