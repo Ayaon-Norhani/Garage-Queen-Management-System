@@ -34,10 +34,7 @@ const getNewestMembers = cache(() => {
 const HomePage = () => {
   return (
     <main className="space-y-12 max-w-5xl">
-      <MemberGridSection
-        title="Quick Links"
-        productsFetcher={getNewestMembers}
-      />
+      <MemberGridSection title="Members" productsFetcher={getNewestMembers} />
     </main>
   );
 };
@@ -52,20 +49,14 @@ const MemberGridSection = async ({
   title,
 }: MemberGridSectionTypes) => {
   return (
-    <div className="space-y-4">
+    <div className="space-y-10">
       <div className="hidden md:block">
         <FeatureMultiCard />
       </div>
       <div className="flex gap-4">
         <h2 className="text-2xl font-bold">{title}</h2>
-        <Button variant="outline" asChild>
-          <Link href="/products" className="space-x-2">
-            <span>View All</span>
-            <ArrowRight className="size-4" />
-          </Link>
-        </Button>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <Suspense
           fallback={
             <>
