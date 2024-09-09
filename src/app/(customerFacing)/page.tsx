@@ -33,8 +33,13 @@ const getNewestMembers = cache(() => {
 
 const HomePage = () => {
   return (
-    <main className="space-y-12 max-w-5xl">
-      <MemberGridSection title="Members" productsFetcher={getNewestMembers} />
+    <main className="space-y-6 max-w-6xl">
+      <div className="hidden md:block">
+        <FeatureMultiCard />
+      </div>
+      <div className="max-w-6xl flex justify-center">
+        <MemberGridSection title="Members" productsFetcher={getNewestMembers} />
+      </div>
     </main>
   );
 };
@@ -50,13 +55,10 @@ const MemberGridSection = async ({
 }: MemberGridSectionTypes) => {
   return (
     <div className="space-y-10">
-      <div className="hidden md:block">
-        <FeatureMultiCard />
-      </div>
       <div className="flex gap-4">
         <h2 className="text-2xl font-bold">{title}</h2>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
         <Suspense
           fallback={
             <>
