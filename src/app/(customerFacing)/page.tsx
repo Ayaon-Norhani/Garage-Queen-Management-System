@@ -67,20 +67,20 @@ const MemberGridSection = async ({
             </>
           }
         >
-          <ProductSuspense membersFetcher={membersFetcher} />
+          <MemberSuspense membersFetcher={membersFetcher} />
         </Suspense>
       </div>
     </div>
   );
 };
 
-const ProductSuspense = async ({
+const MemberSuspense = async ({
   membersFetcher,
 }: {
   membersFetcher: () => Promise<Member[]>;
 }) => {
-  return (await membersFetcher()).map((product) => {
-    return <MemberCard key={product.id} {...product} />;
+  return (await membersFetcher()).map((member) => {
+    return <MemberCard key={member.id} {...member} />;
   });
 };
 
