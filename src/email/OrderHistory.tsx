@@ -18,7 +18,7 @@ type OrderHistoryEmailProps = {
     pricePaidInCents: number;
     createdAt: Date;
     downloadVerificationId: string;
-    product: {
+    member: {
       name: string;
       imagePath: string;
       description: string;
@@ -41,7 +41,7 @@ const OrderHistoryEmail = ({ orders }: OrderHistoryEmailProps) => {
                   <OrderInformation
                     key={order.id}
                     order={order}
-                    product={order.product}
+                    product={order.member}
                     downloadVerificationId={order.downloadVerificationId}
                   />
                   {index < orders.length - 1 && <Hr />}
@@ -62,7 +62,7 @@ OrderHistoryEmail.PreviewProps = {
       createdAt: new Date(),
       pricePaidInCents: 10000,
       downloadVerificationId: crypto.randomUUID(),
-      product: {
+      member: {
         name: "Product name",
         description: "Some description",
         imagePath: "/products/7ad6fd88-c751-46a1-a960-d76cf676b3b9-Ballpen.png",
@@ -73,7 +73,7 @@ OrderHistoryEmail.PreviewProps = {
       createdAt: new Date(),
       pricePaidInCents: 2000,
       downloadVerificationId: crypto.randomUUID(),
-      product: {
+      member: {
         name: "Product name 2",
         description: "Some other description",
         imagePath:

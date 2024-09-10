@@ -55,8 +55,6 @@ const ProductsTable = async () => {
     orderBy: { name: "asc" },
   });
 
-  console.log(products);
-
   if (products.length === 0) return <p>No members found</p>;
 
   return (
@@ -90,9 +88,6 @@ const ProductsTable = async () => {
                 )}
               </TableCell>
               <TableCell>{product.name}</TableCell>
-              {/* <TableCell>
-                {formatCurrency(product.nickname / 100)}
-              </TableCell> */}
               <TableCell>{product.nickname}</TableCell>
               <TableCell>{formatNumber(product._count.orders)}</TableCell>
               <TableCell>

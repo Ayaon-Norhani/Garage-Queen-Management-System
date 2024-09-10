@@ -50,18 +50,13 @@ const CheckoutForm = ({ member, clientSecret }: CheckoutFormProps) => {
           />
         </div>
         <div>
-          {/* <div className="text-lg">
-            {formatCurrency(member.priceInCents / 100)}
-          </div> */}
           <h1 className="text-2xl font-bold">{member.name}</h1>
           <div className="line-clamp-3 text-muted-foreground">
             {member.description}
           </div>
         </div>
       </div>
-      <Elements options={{ clientSecret }} stripe={stripePromise}>
-        {/* <Form priceInCents={member.priceInCents} productId={member.id} /> */}
-      </Elements>
+      <Elements options={{ clientSecret }} stripe={stripePromise}></Elements>
     </div>
   );
 };

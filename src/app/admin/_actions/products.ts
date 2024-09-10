@@ -62,7 +62,7 @@ export const addProduct = async (prevState: unknown, formData: FormData) => {
 
     await db.member.create({
       data: {
-        isAvailableForPurchase: false,
+        isAvailableForPurchase: true,
         name: data.name,
         description: data.description,
         nickname: data.nickname,

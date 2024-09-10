@@ -23,33 +23,36 @@ const ProductForm = ({ member }: Props) => {
 
   return (
     <form action={action} className="space-y-8">
-      <div className="space-y-2">
-        <Label htmlFor="name">Name</Label>
-        <Input
-          type="text"
-          id="name"
-          name="name"
-          required
-          defaultValue={member?.name || ""}
-        />
-        {error.name && <div className="text-destructive">{error.name}</div>}
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="nickname">Nickname</Label>
-        <Input
-          type="string"
-          id="nickname"
-          name="nickname"
-          required
-          value={member?.nickname}
-          defaultValue={member?.nickname || ""}
-        />
-        <div className="text-muted-foreground">
-          {error.nickname && (
-            <div className="text-destructive">{error.nickname}</div>
-          )}
+      <div className="flex space-x-4">
+        <div className="space-y-2 w-[75%]">
+          <Label htmlFor="name">Name</Label>
+          <Input
+            type="text"
+            id="name"
+            name="name"
+            required
+            defaultValue={member?.name || ""}
+          />
+          {error.name && <div className="text-destructive">{error.name}</div>}
+        </div>
+        <div className="space-y-2 w-[25%]">
+          <Label htmlFor="nickname">Nickname</Label>
+          <Input
+            type="string"
+            id="nickname"
+            name="nickname"
+            required
+            value={member?.nickname}
+            defaultValue={member?.nickname || ""}
+          />
+          <div className="text-muted-foreground">
+            {error.nickname && (
+              <div className="text-destructive">{error.nickname}</div>
+            )}
+          </div>
         </div>
       </div>
+
       <div className="space-y-2">
         <Label htmlFor="description">Description</Label>
         <Textarea
