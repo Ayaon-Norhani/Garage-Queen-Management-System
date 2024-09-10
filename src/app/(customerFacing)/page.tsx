@@ -58,7 +58,7 @@ const MemberGridSection = async ({
       <div className="flex gap-4">
         <h2 className="text-2xl font-bold">{title}</h2>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         <Suspense
           fallback={
             <>
