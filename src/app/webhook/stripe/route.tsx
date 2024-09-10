@@ -86,8 +86,8 @@ export async function POST(req: NextRequest) {
     const email = charge.billing_details.email;
     const pricePaidInCents = charge.amount;
 
-    const product = await db.product.findUnique({ where: { id: productId } });
-    if (product == null || email == null) {
+    const member = await db.member.findUnique({ where: { id: productId } });
+    if (member == null || email == null) {
       return new NextResponse("Bad Request", { status: 400 });
     }
 
@@ -118,7 +118,7 @@ export async function POST(req: NextRequest) {
       react: (
         <PurchaseReceiptEmail
           order={order}
-          product={product}
+          product={member}
           downloadVerificationId={downloadVerification.id}
         />
       ),

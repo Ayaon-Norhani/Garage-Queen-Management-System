@@ -10,11 +10,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Product {
+model Member {
   id                     String                 @id @default(uuid())
   name                   String
-  priceInCents           Int
-  filePath               String
+  nickname               String
   imagePath              String
   description            String
   isAvailableForPurchase Boolean                @default(true)
@@ -40,8 +39,8 @@ model Order {
 
   userId    String
   productId String
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  product   Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Member @relation(fields: [productId], references: [id], onDelete: Restrict)
 }
 
 model DownloadVerification {
@@ -49,5 +48,5 @@ model DownloadVerification {
   expiresAt DateTime
   createdAt DateTime @default(now())
   productId String
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product   Member   @relation(fields: [productId], references: [id], onDelete: Cascade)
 }

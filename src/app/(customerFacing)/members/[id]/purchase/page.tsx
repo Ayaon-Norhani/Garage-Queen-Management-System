@@ -10,14 +10,14 @@ type PurchasePageProps = {
 };
 
 const PurchasePage = async ({ params: { id } }: PurchasePageProps) => {
-  const product = await db.product.findUnique({ where: { id } });
+  const member = await db.member.findUnique({ where: { id } });
 
-  if (product == null) return notFound();
+  if (member == null) return notFound();
 
   const paymentIntent = await stripe.paymentIntents.create({
-    amount: product.priceInCents,
+    amount: 1000,
     currency: "USD",
-    metadata: { productId: product.id },
+    metadata: { memberId: member.id },
   });
 
   if (paymentIntent.client_secret == null) {
@@ -25,10 +25,7 @@ const PurchasePage = async ({ params: { id } }: PurchasePageProps) => {
   }
 
   return (
-    <CheckoutForm
-      product={product}
-      clientSecret={paymentIntent.client_secret}
-    />
+    <CheckoutForm member={member} clientSecret={paymentIntent.client_secret} />
   );
 };
 

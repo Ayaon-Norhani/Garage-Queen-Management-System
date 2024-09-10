@@ -15,8 +15,7 @@ const imageSchema = fileSchema.refine(
 const addSchema = z.object({
   name: z.string().min(1),
   description: z.string().min(1),
-  priceInCents: z.coerce.number().int().min(1),
-  file: fileSchema.refine((file) => file.size > 0, "Required"),
+  nickname: z.string().min(1),
   image: imageSchema.refine((file) => file.size > 0, "Required"),
 });
 
@@ -55,33 +54,23 @@ export const addProduct = async (prevState: unknown, formData: FormData) => {
   const data = result.data;
 
   try {
-    // Upload file to Cloudinary
-    //   const fileBuffer = Buffer.from(await data.file.arrayBuffer());
-    //   const fileUpload = await uploadStream(
-    //     { resource_type: 'raw' },
-    //     fileBuffer
-    //   );
-
-    // Upload image to Cloudinary
     const imageBuffer = Buffer.from(await data.image.arrayBuffer());
     const imageUpload = await uploadStream(
       { resource_type: "image" },
       imageBuffer
     );
 
-    // Save product to database
-    await db.product.create({
+    await db.member.create({
       data: {
         isAvailableForPurchase: false,
         name: data.name,
         description: data.description,
-        priceInCents: data.priceInCents,
-        filePath: "test", // Store Cloudinary URL for file
-        imagePath: imageUpload.secure_url, // Store Cloudinary URL for image
+        nickname: data.nickname,
+        imagePath: imageUpload.secure_url,
       },
     });
 
-    console.log("Product successfully created in the DB");
+    console.log("Member successfully created in the DB");
 
 
     await revalidatePath("/");
@@ -112,20 +101,14 @@ export const updateProduct = async (
   }
 
   const data = result.data;
-  const product = await db.product.findUnique({ where: { id } });
+  const member = await db.member.findUnique({ where: { id } });
 
-  if (product == null) return notFound();
+  if (member == null) return notFound();
 
-  let filePath = product.filePath;
-  if (data.file != null && data.file.size > 0) {
-    await fs.unlink(product.filePath);
-    filePath = `products/${crypto.randomUUID()}-${data.file.name}`;
-    await fs.writeFile(filePath, Buffer.from(await data.file.arrayBuffer()));
-  }
 
-  let imagePath = product.imagePath;
+  let imagePath = member.imagePath;
   if (data.image != null && data.image.size > 0) {
-    await fs.unlink(`public${product.imagePath}`);
+    await fs.unlink(`public${member.imagePath}`);
     imagePath = `/products/${crypto.randomUUID()}-${data.image.name}`;
     await fs.writeFile(
       `public${imagePath}`,
@@ -135,31 +118,30 @@ export const updateProduct = async (
 
   console.log("Data before DB insert:", data);
 
-  await db.product.update({
+  await db.member.update({
     where: { id },
     data: {
       isAvailableForPurchase: false,
       name: data.name,
       description: data.description,
-      priceInCents: data.priceInCents,
-      filePath,
+      nickname: data.nickname,
       imagePath,
     },
   });
 
-  console.log("Product successfully edited in the DB");
+  console.log("Member successfully edited in the DB");
 
   revalidatePath("/");
-  revalidatePath("/products");
+  revalidatePath("/member");
 
-  redirect("/admin/products");
+  redirect("/admin/member");
 };
 
 export const toggleProductAvailability = async (
   id: string,
   isAvailableForPurchase: boolean
 ) => {
-  await db.product.update({
+  await db.member.update({
     where: { id },
     data: {
       isAvailableForPurchase,
@@ -167,11 +149,11 @@ export const toggleProductAvailability = async (
   });
 
   revalidatePath("/");
-  revalidatePath("/products");
+  revalidatePath("/members");
 };
 
 export const deleteProduct = async (id: string) => {
-  const product = await db.product.findUnique({ where: { id } });
+  const product = await db.member.findUnique({ where: { id } });
   if (product == null) return notFound();
 
   try {
@@ -183,14 +165,14 @@ export const deleteProduct = async (id: string) => {
       console.log('Image successfully deleted from Cloudinary');
     }
 
-    await db.product.delete({ where: { id } });
+    await db.member.delete({ where: { id } });
     
     revalidatePath("/");
-    revalidatePath("/products");
+    revalidatePath("/member");
 
-    console.log("Product successfully deleted from the DB");
+    console.log("Member successfully deleted from the DB");
   } catch (error) {
-    console.error('Error deleting product or associated image:', error);
-    throw new Error('Failed to delete product or associated image');
+    console.error('Error deleting member or associated image:', error);
+    throw new Error('Failed to delete member or associated image');
   }
 };
