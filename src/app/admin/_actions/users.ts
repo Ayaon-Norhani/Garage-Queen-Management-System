@@ -5,7 +5,7 @@ import { notFound } from "next/navigation"
 
 
 export const deleteUser = async (id: string) => {
-    const user = await db.product.delete({where: {id}})
+    const user = await db.member.delete({where: {id}})
 
     if (user == null) return notFound()
     

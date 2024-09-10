@@ -6,7 +6,7 @@ import React, { Suspense } from "react";
 type Props = {};
 
 const getProducts = cache(() => {
-  return db.product.findMany({
+  return db.member.findMany({
     where: { isAvailableForPurchase: true },
     orderBy: { name: "asc" },
   });

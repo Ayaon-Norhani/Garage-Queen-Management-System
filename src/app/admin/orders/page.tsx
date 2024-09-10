@@ -23,7 +23,7 @@ function getOrders() {
     select: {
       id: true,
       pricePaidInCents: true,
-      product: { select: { name: true } },
+      member: { select: { name: true } },
       user: { select: { email: true } },
     },
     orderBy: { createdAt: "desc" },
@@ -59,7 +59,7 @@ async function OrdersTable() {
       <TableBody>
         {orders.map((order) => (
           <TableRow key={order.id}>
-            <TableCell>{order.product.name}</TableCell>
+            <TableCell>{order.member.name}</TableCell>
             <TableCell>{order.user.email}</TableCell>
             <TableCell>
               {formatCurrency(order.pricePaidInCents / 100)}

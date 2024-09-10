@@ -27,7 +27,7 @@ export async function emailOrderHistory(
           pricePaidInCents: true,
           id: true,
           createdAt: true,
-          product: {
+          member: {
             select: {
               id: true,
               name: true,
@@ -54,7 +54,7 @@ export async function emailOrderHistory(
         await db.downloadVerification.create({
           data: {
             expiresAt: new Date(Date.now() + 24 * 1000 * 60 * 60),
-            productId: order.product.id,
+            memberId: order.member.id,
           },
         })
       ).id,

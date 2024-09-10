@@ -1,10 +1,9 @@
-// @ts-nocheck
-
 import FeatureMultiCard from "@/src/components/FeaturedMultiCard";
 import MemberCard, { MemberCardSkeleton } from "@/src/components/MemberCard";
 import { Button } from "@/src/components/ui/button";
 import db from "@/src/db/db";
 import { cache } from "@/src/lib/cache";
+import { Member } from "@prisma/client";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,7 +12,7 @@ import { isBrowser, isMobile } from "react-device-detect";
 
 const getMostPopularMembers = cache(
   () => {
-    return db.product.findMany({
+    return db.member.findMany({
       where: { isAvailableForPurchase: true },
       orderBy: { orders: { _count: "desc" } },
       take: 6,
@@ -24,7 +23,7 @@ const getMostPopularMembers = cache(
 );
 
 const getNewestMembers = cache(() => {
-  return db.product.findMany({
+  return db.member.findMany({
     where: { isAvailableForPurchase: true },
     orderBy: { createdAt: "desc" },
     take: 6,
@@ -38,7 +37,7 @@ const HomePage = () => {
         <FeatureMultiCard />
       </div>
       <div className="max-w-6xl flex justify-center">
-        <MemberGridSection title="Members" productsFetcher={getNewestMembers} />
+        <MemberGridSection title="Members" membersFetcher={getNewestMembers} />
       </div>
     </main>
   );
@@ -46,11 +45,11 @@ const HomePage = () => {
 
 type MemberGridSectionTypes = {
   title: string;
-  productsFetcher: () => Promise<Product[]>;
+  membersFetcher: () => Promise<Member[]>;
 };
 
 const MemberGridSection = async ({
-  productsFetcher,
+  membersFetcher,
   title,
 }: MemberGridSectionTypes) => {
   return (
@@ -68,20 +67,20 @@ const MemberGridSection = async ({
             </>
           }
         >
-          <ProductSuspense productsFetcher={productsFetcher} />
+          <MemberSuspense membersFetcher={membersFetcher} />
         </Suspense>
       </div>
     </div>
   );
 };
 
-const ProductSuspense = async ({
-  productsFetcher,
+const MemberSuspense = async ({
+  membersFetcher,
 }: {
-  productsFetcher: () => Promise<Product[]>;
+  membersFetcher: () => Promise<Member[]>;
 }) => {
-  return (await productsFetcher()).map((product) => {
-    return <MemberCard key={product.id} {...product} />;
+  return (await membersFetcher()).map((member) => {
+    return <MemberCard key={member.id} {...member} />;
   });
 };
 

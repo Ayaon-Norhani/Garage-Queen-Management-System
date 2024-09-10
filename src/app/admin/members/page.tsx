@@ -18,6 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenu,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/src/components/ui/dropdown-menu";
 import {
   ActiveToggleDropdownItem,
@@ -43,20 +44,18 @@ const AdminProductsPage = (props: Props) => {
 export default AdminProductsPage;
 
 const ProductsTable = async () => {
-  const products = await db.product.findMany({
+  const products = await db.member.findMany({
     select: {
       id: true,
       name: true,
-      priceInCents: true,
+      nickname: true,
       isAvailableForPurchase: true,
       _count: { select: { orders: true } },
     },
     orderBy: { name: "asc" },
   });
 
-  console.log(products);
-
-  if (products.length === 0) return <p>No products found</p>;
+  if (products.length === 0) return <p>No members found</p>;
 
   return (
     <Table>
@@ -66,7 +65,7 @@ const ProductsTable = async () => {
             <span className="sr-only">Available for purchase</span>
           </TableHead>
           <TableHead>Name</TableHead>
-          <TableHead>Price</TableHead>
+          <TableHead>Nickname</TableHead>
           <TableHead>Orders</TableHead>
           <TableHead className="w-0">
             <span className="sr-only">Actions</span>
@@ -89,9 +88,7 @@ const ProductsTable = async () => {
                 )}
               </TableCell>
               <TableCell>{product.name}</TableCell>
-              <TableCell>
-                {formatCurrency(product.priceInCents / 100)}
-              </TableCell>
+              <TableCell>{product.nickname}</TableCell>
               <TableCell>{formatNumber(product._count.orders)}</TableCell>
               <TableCell>
                 <DropdownMenu>
@@ -117,7 +114,7 @@ const ProductsTable = async () => {
                       id={product.id}
                       isAvailableForPurchase={product.isAvailableForPurchase}
                     />
-                    {/* <DropdownMenuSeparator /> */}
+                    <DropdownMenuSeparator />
                     <DeleteDropdownItem
                       id={product.id}
                       disabled={product._count.orders > 0}
