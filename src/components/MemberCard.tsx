@@ -11,7 +11,17 @@ import {
 import { Button } from "./ui/button";
 import Link from "next/link";
 import Image from "next/image";
-import { Facebook, Instagram, Twitter } from "lucide-react";
+import {
+  Facebook,
+  FacebookIcon,
+  Instagram,
+  InstagramIcon,
+  Music2,
+  Store,
+  Twitter,
+  TwitterIcon,
+  Youtube,
+} from "lucide-react";
 
 type Props = {
   id: string;
@@ -34,22 +44,31 @@ const MemberCard = ({ id, name, nickname, description, imagePath }: Props) => {
       <CardContent className="flex-grow">
         <p className="line-clamp-4">{description}</p>
       </CardContent>
-      <CardFooter className="flex justify-end space-x-1">
-        <Button asChild className="rounded-full bg-slate-500 w-6 h-6">
-          <Link href={`/products/${id}/purchase`}>
-            <Facebook size={15} />
-          </Link>
-        </Button>
-        <Button asChild className="rounded-full bg-slate-500 w-6 h-6">
-          <Link href={`/products/${id}/purchase`}>
-            <Instagram size={15} />
-          </Link>
-        </Button>
-        <Button asChild className="rounded-full bg-slate-500 w-6 h-6">
-          <Link href={`/products/${id}/purchase`}>
-            <Twitter size={15} />
-          </Link>
-        </Button>
+      <CardFooter className="flex justify-center space-x">
+        <Link href={`/products/${id}/purchase`} className="p-1">
+          <FacebookIcon
+            size={15}
+            className="text-slate-500 hover:text-slate-700"
+          />
+        </Link>
+        <Link href={`/products/${id}/purchase`} className="p-1">
+          <InstagramIcon
+            size={15}
+            className="text-slate-500 hover:text-slate-700"
+          />
+        </Link>
+        <Link href={`/products/${id}/purchase`} className="p-1">
+          <TwitterIcon
+            size={15}
+            className="text-slate-500 hover:text-slate-700"
+          />
+        </Link>
+        <Link href={`/products/${id}/purchase`} className="p-1">
+          <Youtube size={15} className="text-slate-500 hover:text-slate-700" />
+        </Link>
+        <Link href={`/products/${id}/purchase`} className="p-1">
+          <Store size={15} className="text-slate-500 hover:text-slate-700" />
+        </Link>
       </CardFooter>
     </Card>
   );
