@@ -5,8 +5,7 @@ import React, { CSSProperties, MouseEventHandler } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-type Props = {};
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface ArrowProps {
   className?: string;
@@ -18,15 +17,16 @@ function NextArrow(props: ArrowProps) {
   const { className, style, onClick } = props;
   return (
     <div
-      className={className}
+      onClick={onClick}
+      className={`arrow ${className}`}
       style={{
         ...style,
         display: "absolute",
         right: "12px",
-        zIndex: 99,
       }}
-      onClick={onClick}
-    />
+    >
+      <ChevronRight size={17} style={{ color: "gray" }} />
+    </div>
   );
 }
 
@@ -34,19 +34,20 @@ function PrevArrow(props: ArrowProps) {
   const { className, style, onClick } = props;
   return (
     <div
-      className={className}
+      onClick={onClick}
+      className={`arrow ${className}`}
       style={{
         ...style,
         display: "absolute",
         left: "12px",
-        zIndex: 99,
       }}
-      onClick={onClick}
-    />
+    >
+      <ChevronLeft size={17} style={{ color: "gray" }} />
+    </div>
   );
 }
 
-const FeatureMultiCard = (props: Props) => {
+const FeatureMultiCard = () => {
   var settings = {
     dots: true,
     infinite: true,
