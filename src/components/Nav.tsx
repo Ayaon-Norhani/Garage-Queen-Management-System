@@ -13,7 +13,7 @@ type Props = {
 
 export const Nav = ({ children }: Props) => {
   return (
-    <nav className="bg-navBg text-primary-foreground flex justify-between items-center px-9 py-5">
+    <nav className="bg-gray-200 backdrop-filter backdrop-blur-md text-black flex justify-between items-center px-8 py-4 sticky top-0 bg-opacity-30 z-10">
       <h1 className="text-2xl flex font-bold space-x-2">
         <Image
           src="https://res.cloudinary.com/dyyqzhpji/image/upload/v1724221579/gq_logo_ht3yzj.jpg"
@@ -45,7 +45,7 @@ export const NavLinks = (
     <Link
       {...props}
       className={cn(
-        "px-4 py-3 hover:bg-[#3bb3c3]  hover:text-white focus-visible:bg-secondary focus-visible:text-secondary-foreground rounded",
+        "px-2.5 py-2 hover:bg-[#3bb3c3]  hover:text-white focus-visible:bg-secondary focus-visible:text-secondary-foreground rounded",
         pathname === props.href &&
           "bg-background bg-[#3bb3c3] text-foreground text-white font-bold"
       )}
