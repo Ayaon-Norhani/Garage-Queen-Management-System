@@ -96,10 +96,10 @@
 .slick-prev,
 .slick-next {
   width: 35px !important; 
-  height: 40px !important; 
+  height: 38px !important; 
   background-color: white !important; 
   border-radius: 0 !important; 
-  z-index: 99 !important; 
+  z-index: 1 !important; 
   display: flex !important; 
   align-items: center !important; 
   justify-content: center !important; 
@@ -111,6 +111,5 @@
 
 .slick-prev:before,
 .slick-next:before {
-  color: black !important; 
-  font-size: 18px !important; 
+  display: none;
 }
