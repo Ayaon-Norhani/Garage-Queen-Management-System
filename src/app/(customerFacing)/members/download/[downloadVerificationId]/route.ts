@@ -1,21 +1,29 @@
-import db from "@/src/db/db";
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs/promises"
 
-export async function GET(req: NextRequest, {params: {downloadVerificationId}}: {params : {downloadVerificationId: string}}) {
-    const data = await db.downloadVerification.findUnique({where: {id: downloadVerificationId, expiresAt: {gt: new Date()}},
-    select: {Product: {select : {filePath: true, name: true}}}})
+// Might Use Laterr
 
-    if(data == null) {
-        return NextResponse.redirect(new URL("/products/download/expired", req.url))
-    }    
 
-    const {size} = await fs.stat(data.Product.filePath)
-    const file = await fs.readFile(data.Product.filePath)
-    const extension = data.Product.filePath.split(".").pop()
+// export async function GET(req: NextRequest, {params: {downloadVerificationId}}: {params : {downloadVerificationId: string}}) {
+//     const data = await db.downloadVerification.findUnique({where: {id: downloadVerificationId, expiresAt: {gt: new Date()}},
+//     select: {product: {select : {imagePath: true, name: true}}}})
 
-    return new NextResponse(file, {headers : {
-        "Content-Disposition": `attachment; fileName="${data.Product.name}.${extension}"`,
-        "Content-Length": size.toString(),
-    }} )
-}
+//     if(data == null) {
+//         return NextResponse.redirect(new URL("/products/download/expired", req.url))
+//     }    
+
+//     const {size} = await fs.stat(data.product.filePath)
+//     const file = await fs.readFile(data.product.filePath)
+//     const extension = data.product.filePath.split(".").pop()
+
+//     return new NextResponse(file, {headers : {
+//         "Content-Disposition": `attachment; fileName="${data.product.name}.${extension}"`,
+//         "Content-Length": size.toString(),
+//     }} )
+// }
+
+export async function GET(req: NextRequest, { params: { downloadVerificationId } }: { params: { downloadVerificationId: string } }) {
+    return new NextResponse("Placeholder response for download endpoint.", {
+      status: 200,
+      headers: { "Content-Type": "text/plain" },
+    });
+  }

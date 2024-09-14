@@ -1,14 +1,53 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
+import React, { CSSProperties, MouseEventHandler } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
-type Props = {};
+interface ArrowProps {
+  className?: string;
+  style?: CSSProperties;
+  onClick?: MouseEventHandler<HTMLDivElement>;
+}
 
-const FeatureMultiCard = (props: Props) => {
+function NextArrow(props: ArrowProps) {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      onClick={onClick}
+      className={`arrow ${className}`}
+      style={{
+        ...style,
+        display: "absolute",
+        right: "12px",
+      }}
+    >
+      <ChevronRight size={17} style={{ color: "gray" }} />
+    </div>
+  );
+}
+
+function PrevArrow(props: ArrowProps) {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      onClick={onClick}
+      className={`arrow ${className}`}
+      style={{
+        ...style,
+        display: "absolute",
+        left: "12px",
+      }}
+    >
+      <ChevronLeft size={17} style={{ color: "gray" }} />
+    </div>
+  );
+}
+
+const FeatureMultiCard = () => {
   var settings = {
     dots: true,
     infinite: true,
@@ -18,13 +57,28 @@ const FeatureMultiCard = (props: Props) => {
     autoplay: true,
     autoplaySpeed: 4000,
     cssEase: "linear",
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
   };
   return (
     <Slider {...settings}>
       <section>
-        <main className="flex relative rounded-lg overflow-hidden">
-          <h4 className="absolute left-3 top-3 bg-white/50 backdrop-blur-sm px-2 py-1 rounded">
-            Featured
+        <main className="flex relative overflow-hidden">
+          <h4 className="absolute left-3 top-3 bg-white/50 backdrop-blur-sm px-2 py-1 ">
+            Social Events
+          </h4>{" "}
+          <Image
+            src="/static/images/banner.jpg"
+            width={1200}
+            height={341}
+            alt="Car club"
+          />
+        </main>
+      </section>
+      <section>
+        <main className="flex relative  overflow-hidden">
+          <h4 className="absolute left-3 top-3 bg-white/50 backdrop-blur-sm px-2 py-1">
+            Social Events
           </h4>
           <div>
             <Image
@@ -76,8 +130,8 @@ const FeatureMultiCard = (props: Props) => {
         </main>
       </section>
       <section>
-        <main className="flex relative rounded-lg overflow-hidden">
-          <h4 className="absolute left-3 top-3 bg-white/50 backdrop-blur-sm px-2 py-1 rounded">
+        <main className="flex relative overflow-hidden">
+          <h4 className="absolute left-3 top-3 bg-white/50 backdrop-blur-sm px-2 py-1">
             Featured
           </h4>
 

@@ -15,8 +15,7 @@ const imageSchema = fileSchema.refine(
 const addSchema = z.object({
   name: z.string().min(1),
   description: z.string().min(1),
-  priceInCents: z.coerce.number().int().min(1),
-  file: fileSchema.refine((file) => file.size > 0, "Required"),
+  nickname: z.string().min(1),
   image: imageSchema.refine((file) => file.size > 0, "Required"),
 });
 
@@ -55,41 +54,28 @@ export const addProduct = async (prevState: unknown, formData: FormData) => {
   const data = result.data;
 
   try {
-    // Upload file to Cloudinary
-    //   const fileBuffer = Buffer.from(await data.file.arrayBuffer());
-    //   const fileUpload = await uploadStream(
-    //     { resource_type: 'raw' },
-    //     fileBuffer
-    //   );
-
-    // Upload image to Cloudinary
     const imageBuffer = Buffer.from(await data.image.arrayBuffer());
     const imageUpload = await uploadStream(
       { resource_type: "image" },
       imageBuffer
     );
 
-    // Save product to database
-    await db.product.create({
+    await db.member.create({
       data: {
-        isAvailableForPurchase: false,
+        isAvailableForPurchase: true,
         name: data.name,
         description: data.description,
-        priceInCents: data.priceInCents,
-        filePath: "test", // Store Cloudinary URL for file
-        imagePath: imageUpload.secure_url, // Store Cloudinary URL for image
+        nickname: data.nickname,
+        imagePath: imageUpload.secure_url,
       },
     });
 
-    console.log("Product successfully created in the DB");
+    console.log("Member successfully created in the DB");
 
-    // Revalidate paths and redirect
-    // Revalidate paths and redirect
+
     await revalidatePath("/");
     await revalidatePath("/members");
 
-    // Redirect to admin products page
-    // return { redirect: "/admin/products" };
   } catch (error) {
     console.error("Error uploading files or saving product:", error);
     throw new Error("Failed to upload files or save product");
@@ -97,66 +83,6 @@ export const addProduct = async (prevState: unknown, formData: FormData) => {
 
   redirect("/admin/members");
 };
-
-// export const addProduct = async (prevState: unknown, formData: FormData) => {
-//     const result = addSchema.safeParse(
-//         Object.fromEntries(formData.entries())
-//     )
-
-//     if(result.success === false) {
-//         return result.error.formErrors.fieldErrors
-//     }
-
-//     const data = result.data
-
-//       // Upload file to Cloudinary
-//   const fileUpload = await cloudinary.uploader.upload_stream(
-//     { resource_type: 'raw' },
-//     (error, result) => {
-//       if (error) throw new Error('File upload failed');
-//       return result?.secure_url;
-//     }
-//   ).end(Buffer.from(await data.file.arrayBuffer()));
-
-//   // Upload image to Cloudinary
-//   const imageUpload = await cloudinary.uploader.upload_stream(
-//     { resource_type: 'image' },
-//     (error, result) => {
-//       if (error) throw new Error('Image upload failed');
-//       return result?.secure_url;
-//     //   imagePath = result?.secure_url;
-//     }
-//   ).end(Buffer.from(await data.image.arrayBuffer()));
-
-//   console.log(imageUpload)
-
-//     // await fs.mkdir("products", {recursive: true})
-//     // const filePath = `products/${crypto.randomUUID()}-${data.file.name}`
-//     // await fs.writeFile(filePath, Buffer.from(await data.file.arrayBuffer()))
-
-//     // await fs.mkdir("public/products", {recursive: true})
-//     // const imagePath = `/products/${crypto.randomUUID()}-${data.image.name}`
-//     // await fs.writeFile(`public${imagePath}`, Buffer.from(await data.image.arrayBuffer()))
-
-//     await db.product.create({data: {
-//         isAvailableForPurchase: false,
-//         name: data.name,
-//         description: data.description,
-//         priceInCents: data.priceInCents,
-//         // filePath,
-//         // imagePath
-//         filePath: "test",
-//         // imagePath: "test"
-//         // filePath: fileUpload.secure_url, // Store Cloudinary URL
-//         imagePath: imageUpload.secure_url, // Store Cloudinary URL
-//     }})
-
-//     console.log("Product successfully created in the DB");
-
-//     revalidatePath("/")
-//     revalidatePath("/products")
-//     redirect("/admin/products")
-// }
 
 const editSchema = addSchema.extend({
   file: fileSchema.optional(),
@@ -175,20 +101,14 @@ export const updateProduct = async (
   }
 
   const data = result.data;
-  const product = await db.product.findUnique({ where: { id } });
+  const member = await db.member.findUnique({ where: { id } });
 
-  if (product == null) return notFound();
+  if (member == null) return notFound();
 
-  let filePath = product.filePath;
-  if (data.file != null && data.file.size > 0) {
-    await fs.unlink(product.filePath);
-    filePath = `products/${crypto.randomUUID()}-${data.file.name}`;
-    await fs.writeFile(filePath, Buffer.from(await data.file.arrayBuffer()));
-  }
 
-  let imagePath = product.imagePath;
+  let imagePath = member.imagePath;
   if (data.image != null && data.image.size > 0) {
-    await fs.unlink(`public${product.imagePath}`);
+    await fs.unlink(`public${member.imagePath}`);
     imagePath = `/products/${crypto.randomUUID()}-${data.image.name}`;
     await fs.writeFile(
       `public${imagePath}`,
@@ -198,31 +118,30 @@ export const updateProduct = async (
 
   console.log("Data before DB insert:", data);
 
-  await db.product.update({
+  await db.member.update({
     where: { id },
     data: {
       isAvailableForPurchase: false,
       name: data.name,
       description: data.description,
-      priceInCents: data.priceInCents,
-      filePath,
+      nickname: data.nickname,
       imagePath,
     },
   });
 
-  console.log("Product successfully edited in the DB");
+  console.log("Member successfully edited in the DB");
 
   revalidatePath("/");
-  revalidatePath("/products");
+  revalidatePath("/member");
 
-  redirect("/admin/products");
+  redirect("/admin/member");
 };
 
 export const toggleProductAvailability = async (
   id: string,
   isAvailableForPurchase: boolean
 ) => {
-  await db.product.update({
+  await db.member.update({
     where: { id },
     data: {
       isAvailableForPurchase,
@@ -230,16 +149,30 @@ export const toggleProductAvailability = async (
   });
 
   revalidatePath("/");
-  revalidatePath("/products");
+  revalidatePath("/members");
 };
 
 export const deleteProduct = async (id: string) => {
-  const product = await db.product.delete({ where: { id } });
+  const product = await db.member.findUnique({ where: { id } });
   if (product == null) return notFound();
 
-  await fs.unlink(product.filePath);
-  await fs.unlink(`public${product.imagePath}`);
+  try {
+    const imageUrl = product.imagePath;
+    const publicId = imageUrl.split('/').pop()?.split('.')[0];
 
-  revalidatePath("/");
-  revalidatePath("/products");
+    if (publicId) {
+      await cloudinary.uploader.destroy(publicId, { resource_type: 'image' });
+      console.log('Image successfully deleted from Cloudinary');
+    }
+
+    await db.member.delete({ where: { id } });
+    
+    revalidatePath("/");
+    revalidatePath("/member");
+
+    console.log("Member successfully deleted from the DB");
+  } catch (error) {
+    console.error('Error deleting member or associated image:', error);
+    throw new Error('Failed to delete member or associated image');
+  }
 };

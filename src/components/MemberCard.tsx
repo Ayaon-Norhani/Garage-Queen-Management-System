@@ -5,28 +5,33 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
+  CardNickname,
   CardTitle,
 } from "./ui/card";
-import { formatCurrency } from "@/src/lib/formatter";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import Image from "next/image";
+import {
+  Facebook,
+  FacebookIcon,
+  Instagram,
+  InstagramIcon,
+  Music2,
+  Store,
+  Twitter,
+  TwitterIcon,
+  Youtube,
+} from "lucide-react";
 
 type Props = {
   id: string;
   name: string;
-  priceInCents: number;
+  nickname?: string;
   description: string;
   imagePath: string;
 };
 
-const MemberCard = ({
-  id,
-  name,
-  priceInCents,
-  description,
-  imagePath,
-}: Props) => {
+const MemberCard = ({ id, name, nickname, description, imagePath }: Props) => {
   return (
     <Card className="flex overflow-hidden flex-col">
       <div className="relative w-full h-auto aspect-3/2">
@@ -34,15 +39,36 @@ const MemberCard = ({
       </div>
       <CardHeader>
         <CardTitle>{name}</CardTitle>
-        <CardDescription>{formatCurrency(priceInCents / 100)}</CardDescription>
+        <CardNickname>{nickname}</CardNickname>
       </CardHeader>
       <CardContent className="flex-grow">
         <p className="line-clamp-4">{description}</p>
       </CardContent>
-      <CardFooter>
-        <Button asChild size="lg" className="w-full">
-          <Link href={`/products/${id}/purchase`}>Order</Link>
-        </Button>
+      <CardFooter className="flex justify-center space-x">
+        <Link href={`/products/${id}/purchase`} className="p-1">
+          <FacebookIcon
+            size={15}
+            className="text-slate-500 hover:text-slate-700"
+          />
+        </Link>
+        <Link href={`/products/${id}/purchase`} className="p-1">
+          <InstagramIcon
+            size={15}
+            className="text-slate-500 hover:text-slate-700"
+          />
+        </Link>
+        <Link href={`/products/${id}/purchase`} className="p-1">
+          <TwitterIcon
+            size={15}
+            className="text-slate-500 hover:text-slate-700"
+          />
+        </Link>
+        <Link href={`/products/${id}/purchase`} className="p-1">
+          <Youtube size={15} className="text-slate-500 hover:text-slate-700" />
+        </Link>
+        <Link href={`/products/${id}/purchase`} className="p-1">
+          <Store size={15} className="text-slate-500 hover:text-slate-700" />
+        </Link>
       </CardFooter>
     </Card>
   );

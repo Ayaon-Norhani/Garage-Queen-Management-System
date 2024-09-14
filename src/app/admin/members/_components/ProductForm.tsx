@@ -8,79 +8,70 @@ import { formatCurrency } from "@/src/lib/formatter";
 import { useState } from "react";
 import { addProduct, updateProduct } from "../../_actions/products";
 import { useFormState, useFormStatus } from "react-dom";
-import { Product } from "@prisma/client";
+import { Member } from "@prisma/client";
 import Image from "next/image";
 
 type Props = {
-  product?: Product | null;
+  member?: Member | null;
 };
 
-const ProductForm = ({ product }: Props) => {
+const ProductForm = ({ member }: Props) => {
   const [error, action] = useFormState(
-    product == null ? addProduct : updateProduct.bind(null, product.id),
+    member == null ? addProduct : updateProduct.bind(null, member.id),
     {}
-  );
-  const [priceInCents, setPriceInCents] = useState<number | undefined>(
-    product?.priceInCents
   );
 
   return (
     <form action={action} className="space-y-8">
-      <div className="space-y-2">
-        <Label htmlFor="name">Name</Label>
-        <Input
-          type="text"
-          id="name"
-          name="name"
-          required
-          defaultValue={product?.name || ""}
-        />
-        {error.name && <div className="text-destructive">{error.name}</div>}
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="priceInCents">Price In Cents</Label>
-        <Input
-          type="number"
-          id="priceInCents"
-          name="priceInCents"
-          required
-          value={priceInCents}
-          defaultValue={product?.priceInCents || ""}
-          onChange={(e) => setPriceInCents(Number(e.target.value) || undefined)}
-        />
-        <div className="text-muted-foreground">
-          {formatCurrency((priceInCents || 0) / 100)}
-          {error.priceInCents && (
-            <div className="text-destructive">{error.priceInCents}</div>
-          )}
+      <div className="flex space-x-4">
+        <div className="space-y-2 w-[75%]">
+          <Label htmlFor="name">Name</Label>
+          <Input
+            type="text"
+            id="name"
+            name="name"
+            required
+            defaultValue={member?.name || ""}
+          />
+          {error.name && <div className="text-destructive">{error.name}</div>}
+        </div>
+        <div className="space-y-2 w-[25%]">
+          <Label htmlFor="nickname">Nickname</Label>
+          <Input
+            type="string"
+            id="nickname"
+            name="nickname"
+            required
+            value={member?.nickname}
+            defaultValue={member?.nickname || ""}
+          />
+          <div className="text-muted-foreground">
+            {error.nickname && (
+              <div className="text-destructive">{error.nickname}</div>
+            )}
+          </div>
         </div>
       </div>
+
       <div className="space-y-2">
         <Label htmlFor="description">Description</Label>
         <Textarea
           id="description"
           name="description"
           required
-          defaultValue={product?.description || ""}
+          defaultValue={member?.description || ""}
         />
         {error.description && (
           <div className="text-destructive">{error.description}</div>
         )}
       </div>
-      <div className="space-y-2">
-        <Label htmlFor="file">File</Label>
-        <Input type="file" id="file" name="file" required={product == null} />
-        {product != null && (
-          <div className="text-muted-foreground">{product.filePath}</div>
-        )}
-        {error.file && <div className="text-destructive">{error.file}</div>}
-      </div>
+
       <div className="space-y-2">
         <Label htmlFor="image">Image</Label>
-        <Input type="file" id="image" name="image" required={product == null} />
-        {product != null && (
+        <Input type="file" id="image" name="image" required={member == null} />
+        {member != null && (
           <Image
-            src={product.imagePath}
+            src={member.imagePath}
             height="400"
             width="400"
             alt="Product Image"

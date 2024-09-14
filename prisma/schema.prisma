@@ -6,15 +6,14 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model Product {
+model Member {
   id                     String                 @id @default(uuid())
   name                   String
-  priceInCents           Int
-  filePath               String
+  nickname               String
   imagePath              String
   description            String
   isAvailableForPurchase Boolean                @default(true)
@@ -38,16 +37,16 @@ model Order {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
-  userId    String
-  productId String
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  product   Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+  userId   String
+  memberId String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  member   Member @relation(fields: [memberId], references: [id], onDelete: Restrict)
 }
 
 model DownloadVerification {
   id        String   @id @default(uuid())
   expiresAt DateTime
   createdAt DateTime @default(now())
-  productId String
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  memberId  String
+  member    Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
 }

@@ -8,11 +8,11 @@ const EditProductPage = async ({
 }: {
   params: { id: string };
 }) => {
-  const product = await db.product.findUnique({ where: { id } });
+  const member = await db.member.findUnique({ where: { id } });
   return (
     <>
       <PageHeader>Edit Product</PageHeader>
-      <ProductForm product={product} />
+      <ProductForm member={member} />
     </>
   );
 };
