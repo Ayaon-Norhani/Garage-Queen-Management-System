@@ -68,7 +68,7 @@ const FeatureMultiCard = () => {
             Social Events
           </h4>{" "}
           <Image
-            src="/static/images/banner.jpg"
+            src="https://res.cloudinary.com/dyyqzhpji/image/upload/v1726300949/GarageQueen/roskq5aw1jw3htiqjgee.png"
             width={1200}
             height={341}
             alt="Car club"
@@ -76,111 +76,29 @@ const FeatureMultiCard = () => {
         </main>
       </section>
       <section>
-        <main className="flex relative  overflow-hidden">
-          <h4 className="absolute left-3 top-3 bg-white/50 backdrop-blur-sm px-2 py-1">
+        <main className="flex relative overflow-hidden">
+          <h4 className="absolute left-3 top-3 bg-white/50 backdrop-blur-sm px-2 py-1 ">
             Social Events
-          </h4>
-          <div>
-            <Image
-              src="/static/images/rezvani-main.jpg"
-              width={600}
-              height={400}
-              alt="rezvani main picture"
-            />
-          </div>
-          <aside className="grid grid-cols-2 gap-0">
-            <article>
-              {" "}
-              <Image
-                src="/static/images/rezvani-front.jpg"
-                width={300}
-                height={200}
-                alt="rezvani main picture"
-              />
-            </article>
-            <article>
-              {" "}
-              <Image
-                src="/static/images/rezvani-interior.jpg"
-                width={300}
-                height={200}
-                alt="rezvani main picture"
-              />
-            </article>
-
-            <article>
-              {" "}
-              <Image
-                src="/static/images/rezvani-back.jpg"
-                width={300}
-                height={200}
-                alt="rezvani main picture"
-              />
-            </article>
-            <article>
-              {" "}
-              <Image
-                src="/static/images/rezvani-wheel.jpg"
-                width={300}
-                height={200}
-                alt="rezvani main picture"
-              />
-            </article>
-          </aside>
+          </h4>{" "}
+          <Image
+            src="https://res.cloudinary.com/dyyqzhpji/image/upload/v1724228051/GarageQueen/k6dymvd9mbj08uqz3ijk.webp"
+            width={1200}
+            height={341}
+            alt="Car club"
+          />
         </main>
       </section>
       <section>
         <main className="flex relative overflow-hidden">
-          <h4 className="absolute left-3 top-3 bg-white/50 backdrop-blur-sm px-2 py-1">
-            Featured
-          </h4>
-
-          <div>
-            <Image
-              src="/static/images/ferrari-main.jpg"
-              width={600}
-              height={400}
-              alt="ferrari main picture"
-            />
-          </div>
-          <aside className="grid grid-cols-2 gap-0">
-            <article>
-              {" "}
-              <Image
-                src="/static/images/ferrari-front.jpg"
-                width={300}
-                height={200}
-                alt="ferrari main picture"
-              />
-            </article>
-            <article>
-              {" "}
-              <Image
-                src="/static/images/ferrari-interior.jpg"
-                width={300}
-                height={200}
-                alt="ferrari main picture"
-              />
-            </article>
-            <article>
-              {" "}
-              <Image
-                src="/static/images/ferrari-engine.jpg"
-                width={300}
-                height={200}
-                alt="ferrari main picture"
-              />
-            </article>
-            <article>
-              {" "}
-              <Image
-                src="/static/images/ferrari-back.jpg"
-                width={300}
-                height={200}
-                alt="ferrari main picture"
-              />
-            </article>
-          </aside>
+          <h4 className="absolute left-3 top-3 bg-white/50 backdrop-blur-sm px-2 py-1 ">
+            Social Events
+          </h4>{" "}
+          <Image
+            src="https://res.cloudinary.com/dyyqzhpji/image/upload/v1724228050/GarageQueen/palccgyjwpgkeeqivb95.webp"
+            width={1200}
+            height={341}
+            alt="Car club"
+          />
         </main>
       </section>
     </Slider>
